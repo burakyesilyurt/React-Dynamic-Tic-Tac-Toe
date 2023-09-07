@@ -19,26 +19,42 @@ const oWinner = (lenght: number) => {
     return oWinnerNum
 } 
 
-const isWinner = (board: number[][]): boolean => {
-    
+const verticalHorizontalWinner = (board: number[][]): boolean => {
     const oWinnerNum = oWinner(board.length)
-    let vertical = []
     for(let i = 0; i < board.length; ++i){
-       let arr = []
+        let isVertical = 1;
+        let isHorizontal = 1;
         for(let j = 0; j < board[i].length; ++j){
-            arr.push(board[i][j])
-            vertical.push(board[j][i])
+            isHorizontal *= board[i][j];
+            isVertical *= board[j][i];
         } 
-        const isVertical = vertical.reduce((a,b)=> a * b,1)
-        const isHorizontal = arr.reduce((a, b) => a * b, 1);
         if (isHorizontal === 1 || isHorizontal === oWinnerNum || isVertical === 1 || isVertical === oWinnerNum) {
             return true;
         }
+      
     }
     return false
 }
-   
 
+const diagonalWinner = (board: number[][]): boolean => {
+    const oWinnerNum = oWinner(board.length)
+    let diagSum = 1;
+    let reverseDiagSum = 1;
+    for(let i = 0, j = board.length - 1; i < board.length; ++i, --j){
+        diagSum *= board[i][i]
+        reverseDiagSum *= board[i][j]
+    }
+    if(diagSum === 1 || reverseDiagSum === 1 || diagSum === oWinnerNum || reverseDiagSum === oWinnerNum){
+        return true
+    }
+    return false
+}
+
+const isWinner = (board: number[][]): boolean => {
+   if(verticalHorizontalWinner(board) || diagonalWinner(board)) return true
+   return false
+}
+   
 const createBlocks = (n: number): number[][] => {
   return new Array(n).fill(undefined).map(() => new Array(n).fill(0))
 };
@@ -48,10 +64,15 @@ function App() {
   const [turn, setTurn] = useState(true)
   
   const handleClick = (row: number, col: number) => {
+    if(board[row][col] !== 0) return
     board[row][col] = turn ? 1 : 2;
     setBoard(() => [...board]);
     if(isWinner(board)){
-        console.log("hi")
+        setBoard(createBlocks(3))
+        const winner = turn ? "X" : "O";
+        console.log(`Winner is ${winner}`)
+        setTurn(false)
+        
     }
     setTurn((prev) => !prev)
   };
