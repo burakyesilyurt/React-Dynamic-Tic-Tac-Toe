@@ -85,7 +85,7 @@ function App() {
     if (isWinner(board)) {
       setBoard(createBlocks(gameSize));
       setWinner(turn ? "X" : "O");
-      setTurn(turn);
+      setTurn(true);
     } else {
       setWinner(null);
       setTurn((prev) => !prev);
