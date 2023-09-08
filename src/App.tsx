@@ -135,7 +135,10 @@ function App() {
       ) : (
         <p style={{ fontSize: 24 }}>Turn: {turn ? "X" : "O"} </p>
       )}
-      <button onClick={() => setBoard(createBlocks(gameSize))}>Reset</button>
+      <button onClick={() => {
+        setBoard(createBlocks(gameSize))
+        setTurn(true)
+    }}>Reset</button>
     </>
   );
 }
