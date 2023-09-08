@@ -34,12 +34,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './pnpm-lock.yaml'
-      - name: Install pnpm
-        run: npm install --global pnpm
-      - name: Install dep
-        run: pnpm install 
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
       - name: Build
         run: pnpm run build
       - name: Setup Pages
